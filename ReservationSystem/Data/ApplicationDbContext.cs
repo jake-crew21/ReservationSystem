@@ -1,5 +1,4 @@
-﻿using Humanizer.Localisation;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ReservationSystem.Models;
@@ -7,12 +6,12 @@ using ReservationSystem.Converters;
 
 namespace ReservationSystem.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<AccountType> AccountType { get; set; }
         public DbSet<Reservation> Reservation { get; set; }
-        //public DbSet<Sitting> Sitting { get; set; }
         public DbSet<Table> Table { get; set; }
+        public DbSet<SittingSchedule> SittingSchedule { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -21,11 +20,10 @@ namespace ReservationSystem.Data
         {
             //Set HasKey for composite keys
             builder.Entity<Reservation>().HasKey(k => new { k.Contact, k.ResDate, k.StartTime });
-            //builder.Entity<Sitting>().HasKey(k => new { k.TableId, k.Contact, k.ResDate, k.StartTime });
-            builder.Entity<Table>().HasKey(k => new { k.Area, k.Id });
+            builder.Entity<SittingSchedule>().HasKey(k => new { k.SessionType, k.StartDate });
             //use OnModleCreating method to pre-pop your Db for marking purpose;
             builder.Entity<AccountType>(e => e.Property(e => e.Id).ValueGeneratedOnAdd());
-            //builder.Entity<Table>(e => e.Property(e => e.Id).ValueGeneratedOnAdd());
+            builder.Entity<Table>(e => e.Property(e => e.Id).ValueGeneratedOnAdd());
             //This is also called seed data meaning when migration happens not only tables are created but rows are added too
             builder.Entity<AccountType>().HasData(
                 new AccountType

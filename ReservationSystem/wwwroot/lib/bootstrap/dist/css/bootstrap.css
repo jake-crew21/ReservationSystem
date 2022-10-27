@@ -4440,6 +4440,9 @@ textarea.form-control-lg {
 .navbar-dark .navbar-text a:focus {
   color: #fff;
 }
+.navbar-cust {
+    background-color: #30343F
+}
 
 .card {
   position: relative;

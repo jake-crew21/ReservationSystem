@@ -18,7 +18,16 @@
                 <input asp-for="Seats" class="form-control" />
                 <span asp-validation-for="Seats" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="Area" />
+            <div class="form-group">
+                <label asp-for="Area" class="control-label"></label>
+                <select asp-for="Area" class="form-control"></select>
+                <span asp-validation-for="Area" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TableNum" class="control-label"></label>
+                <input asp-for="TableNum" class="form-control" />
+                <span asp-validation-for="TableNum" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

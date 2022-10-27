@@ -2,15 +2,15 @@
 
 #nullable disable
 
-namespace ReservationSystem.Data.Migrations
+namespace ReservationSystem.Migrations
 {
-    public partial class NoTabRes : Migration
+    public partial class addTableNum : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Id",
-                table: "Reservation",
+                name: "TableNum",
+                table: "Table",
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "");
@@ -19,8 +19,8 @@ namespace ReservationSystem.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Id",
-                table: "Reservation");
+                name: "TableNum",
+                table: "Table");
         }
     }
 }

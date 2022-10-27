@@ -9,17 +9,17 @@ using ReservationSystem.Data;
 
 #nullable disable
 
-namespace ReservationSystem.Data.Migrations
+namespace ReservationSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220829022319_AddAreas")]
-    partial class AddAreas
+    [Migration("20221020235310_AppUserUpdate")]
+    partial class AppUserUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.8")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -74,77 +74,6 @@ namespace ReservationSystem.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -261,14 +190,79 @@ namespace ReservationSystem.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ReservationSystem.Models.BookingStatus", b =>
+            modelBuilder.Entity("ReservationSystem.Models.ApplicationUser", b =>
                 {
-                    b.Property<string>("Status")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Status");
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
 
-                    b.ToTable("BookingStatus");
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("ReservationSystem.Models.Reservation", b =>
@@ -285,12 +279,11 @@ namespace ReservationSystem.Data.Migrations
                         .HasColumnType("time")
                         .HasColumnOrder(3);
 
-                    b.Property<string>("Area")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Area")
+                        .HasColumnType("int");
 
-                    b.Property<string>("BookingStatusStatus")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("BookingStatus")
+                        .HasColumnType("int");
 
                     b.Property<int>("Duration")
                         .HasColumnType("int");
@@ -302,6 +295,10 @@ namespace ReservationSystem.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -309,104 +306,23 @@ namespace ReservationSystem.Data.Migrations
                     b.Property<int>("NoOfPpl")
                         .HasColumnType("int");
 
+                    b.Property<int>("NoOfTable")
+                        .HasColumnType("int");
+
                     b.Property<string>("Notes")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SeatingAreaArea")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("SessionType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("SessionType")
+                        .HasColumnType("int");
 
                     b.Property<string>("Source")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Contact", "ResDate", "StartTime");
 
-                    b.HasIndex("BookingStatusStatus");
-
-                    b.HasIndex("SeatingAreaArea");
-
-                    b.HasIndex("SessionType");
-
                     b.ToTable("Reservation");
-                });
-
-            modelBuilder.Entity("ReservationSystem.Models.SeatingArea", b =>
-                {
-                    b.Property<string>("Area")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Area");
-
-                    b.ToTable("SeatingArea");
-
-                    b.HasData(
-                        new
-                        {
-                            Area = "Main"
-                        },
-                        new
-                        {
-                            Area = "Outside"
-                        },
-                        new
-                        {
-                            Area = "Balcony"
-                        });
-                });
-
-            modelBuilder.Entity("ReservationSystem.Models.Session", b =>
-                {
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Type");
-
-                    b.ToTable("Session");
-                });
-
-            modelBuilder.Entity("ReservationSystem.Models.Sitting", b =>
-                {
-                    b.Property<int>("TableId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("Contact")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnOrder(2);
-
-                    b.Property<DateTime>("ResDate")
-                        .HasColumnType("date")
-                        .HasColumnOrder(3);
-
-                    b.Property<TimeSpan>("StartTime")
-                        .HasColumnType("time")
-                        .HasColumnOrder(4);
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TableStatusStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("TableId", "Contact", "ResDate", "StartTime");
-
-                    b.HasIndex("TableStatusStatus");
-
-                    b.HasIndex("Contact", "ResDate", "StartTime");
-
-                    b.ToTable("Sitting");
                 });
 
             modelBuilder.Entity("ReservationSystem.Models.Table", b =>
@@ -417,48 +333,19 @@ namespace ReservationSystem.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Area")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SeatingAreaArea")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Area")
+                        .HasColumnType("int");
 
                     b.Property<int>("Seats")
                         .HasColumnType("int");
 
+                    b.Property<string>("TableNum")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("SeatingAreaArea");
-
                     b.ToTable("Table");
-                });
-
-            modelBuilder.Entity("ReservationSystem.Models.TableStatus", b =>
-                {
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Status");
-
-                    b.ToTable("TableStatus");
-                });
-
-            modelBuilder.Entity("ReservationSystem.Models.ApplicationUser", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -472,7 +359,7 @@ namespace ReservationSystem.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("ReservationSystem.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -481,7 +368,7 @@ namespace ReservationSystem.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("ReservationSystem.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -496,7 +383,7 @@ namespace ReservationSystem.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("ReservationSystem.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -505,72 +392,11 @@ namespace ReservationSystem.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("ReservationSystem.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ReservationSystem.Models.Reservation", b =>
-                {
-                    b.HasOne("ReservationSystem.Models.BookingStatus", "BookingStatus")
-                        .WithMany()
-                        .HasForeignKey("BookingStatusStatus");
-
-                    b.HasOne("ReservationSystem.Models.SeatingArea", "SeatingArea")
-                        .WithMany()
-                        .HasForeignKey("SeatingAreaArea")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ReservationSystem.Models.Session", "Session")
-                        .WithMany()
-                        .HasForeignKey("SessionType")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BookingStatus");
-
-                    b.Navigation("SeatingArea");
-
-                    b.Navigation("Session");
-                });
-
-            modelBuilder.Entity("ReservationSystem.Models.Sitting", b =>
-                {
-                    b.HasOne("ReservationSystem.Models.Table", "Table")
-                        .WithMany()
-                        .HasForeignKey("TableId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ReservationSystem.Models.TableStatus", "TableStatus")
-                        .WithMany()
-                        .HasForeignKey("TableStatusStatus")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ReservationSystem.Models.Reservation", "Reservation")
-                        .WithMany()
-                        .HasForeignKey("Contact", "ResDate", "StartTime")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Reservation");
-
-                    b.Navigation("Table");
-
-                    b.Navigation("TableStatus");
-                });
-
-            modelBuilder.Entity("ReservationSystem.Models.Table", b =>
-                {
-                    b.HasOne("ReservationSystem.Models.SeatingArea", "SeatingArea")
-                        .WithMany()
-                        .HasForeignKey("SeatingAreaArea");
-
-                    b.Navigation("SeatingArea");
                 });
 #pragma warning restore 612, 618
         }

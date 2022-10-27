@@ -22,9 +22,7 @@ namespace ReservationSystem.Controllers
         // GET: Table
         public async Task<IActionResult> Index()
         {
-              return _context.Table != null ? 
-                          View(await _context.Table.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Table'  is null.");
+              return View(await _context.Table.ToListAsync());
         }
 
         // GET: Table/Details/5
@@ -56,7 +54,7 @@ namespace ReservationSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Seats,Area")] Table table)
+        public async Task<IActionResult> Create([Bind("Id,Seats,Area,TableNum")] Table table)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +86,7 @@ namespace ReservationSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Seats,Area")] Table table)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Seats,Area,TableNum")] Table table)
         {
             if (id != table.Id)
             {
@@ -157,7 +155,7 @@ namespace ReservationSystem.Controllers
 
         private bool TableExists(int id)
         {
-          return (_context.Table?.Any(e => e.Id == id)).GetValueOrDefault();
+          return _context.Table.Any(e => e.Id == id);
         }
     }
 }

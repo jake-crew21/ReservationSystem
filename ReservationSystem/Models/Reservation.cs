@@ -32,12 +32,13 @@ namespace ReservationSystem.Models
         public StatusEnum BookingStatus { get; set; }
         public enum StatusEnum
         {
-            Requested,
+            Pending,
             Confirmed,
             Cancelled,
             Rejected,
             Seated,
-            Completed
+            Completed,
+            Requested
         }
         [Required]
         public SessionEnum SessionType { get; set; }
@@ -45,7 +46,8 @@ namespace ReservationSystem.Models
         {
             Breakfast,
             Lunch,
-            Dinner
+            Dinner,
+            SpecialEvent
         }
         [Required]
         public  AreaEnum Area { get; set; }

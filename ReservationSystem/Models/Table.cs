@@ -5,12 +5,11 @@ namespace ReservationSystem.Models
 {
     public class Table
     {
-        [Key, Column(Order = 2)]
+        //[Key]
         [Required]
         public int Id { get; set; }
         [Required]
         public int Seats { get; set; }
-        [Key, Column(Order = 1)]
         [Required]
         public AreaEnum Area { get; set; }
         public enum AreaEnum
@@ -19,5 +18,7 @@ namespace ReservationSystem.Models
             Outside,
             Balcony
         }
+        [Required]
+        public string TableNum { get; set; }
     }
 }

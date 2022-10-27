@@ -10,6 +10,7 @@ using ReservationSystem.Data;
 using ReservationSystem.Models;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
+using System.Diagnostics;
 
 namespace ReservationSystem.Controllers
 {
@@ -52,26 +53,28 @@ namespace ReservationSystem.Controllers
         {
             return View();
         }
-        public IActionResult Request(Reservation reservation)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create( Reservation reservation)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            reservation = new Reservation
-            {
-                Id = CheckUId(userId),
-                NoOfTable = CheckTbl(reservation.NoOfPpl),
-                EndTime = reservation.StartTime.AddHours(2),
-                BookingStatus = Reservation.StatusEnum.Requested,
-                SessionType = (Reservation.SessionEnum)CheckSession(reservation.StartTime)
-            };
+            reservation.Id = CheckUId(userId);
+            reservation.NoOfTable = CheckTbl(reservation.NoOfPpl);
+            reservation.EndTime = reservation.StartTime.AddHours(2);
+            reservation.BookingStatus = Reservation.StatusEnum.Requested;
+            reservation.SessionType = (Reservation.SessionEnum)CheckSession(reservation.StartTime);
             _context.Add(reservation);
-            return View();
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
         public int CheckSession(TimeOnly startT)
         {
-            TimeSpan ts = startT.ToTimeSpan();
-            bool bt = startT.IsBetween(new TimeOnly(07,00), new TimeOnly(09,00));
+            //TimeSpan ts = startT.ToTimeSpan();
+            TimeOnly startBreak = new TimeOnly(7, 0);
+            TimeOnly endBreak = new TimeOnly(11, 0);
+            bool bt = startT.IsBetween(startBreak,endBreak);
             bool lt = startT.IsBetween(new TimeOnly(11, 00), new TimeOnly(15,00));
-            bool dt = startT.IsBetween(new TimeOnly(18, 00), new TimeOnly(22,00));
+            bool dt = startT.IsBetween(new TimeOnly(18, 00), new TimeOnly(23,00));
             if (bt)
             {
                 return 0;
@@ -112,7 +115,7 @@ namespace ReservationSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FirstName,LastName,Contact,NoOfPpl,NoOfTable,ResDate,StartTime,EndTime,Duration,Notes,Source,BookingStatus,SessionType,Area")] Reservation reservation)
+        public async Task<IActionResult> Create2([Bind("FirstName,LastName,Contact,NoOfPpl,NoOfTable,ResDate,StartTime,EndTime,Duration,Notes,Source,BookingStatus,SessionType,Area")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
@@ -210,7 +213,7 @@ namespace ReservationSystem.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
+        
         private bool ReservationExists(string id)
         {
           return (_context.Reservation?.Any(e => e.Contact == id)).GetValueOrDefault();

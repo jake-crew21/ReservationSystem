@@ -9,17 +9,17 @@ using ReservationSystem.Data;
 
 #nullable disable
 
-namespace ReservationSystem.Data.Migrations
+namespace ReservationSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220909004752_StatusEnumAndResScaff")]
-    partial class StatusEnumAndResScaff
+    [Migration("20221013020748_addTableNum")]
+    partial class addTableNum
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.8")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -261,38 +261,6 @@ namespace ReservationSystem.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("ReservationSystem.Models.BookingStatus", b =>
-                {
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Status");
-
-                    b.ToTable("BookingStatus");
-
-                    b.HasData(
-                        new
-                        {
-                            Status = "Pending"
-                        },
-                        new
-                        {
-                            Status = "Confirmed"
-                        },
-                        new
-                        {
-                            Status = "Cancelled"
-                        },
-                        new
-                        {
-                            Status = "Seated"
-                        },
-                        new
-                        {
-                            Status = "Completed"
-                        });
-                });
-
             modelBuilder.Entity("ReservationSystem.Models.Reservation", b =>
                 {
                     b.Property<string>("Contact")
@@ -307,9 +275,8 @@ namespace ReservationSystem.Data.Migrations
                         .HasColumnType("time")
                         .HasColumnOrder(3);
 
-                    b.Property<string>("Area")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Area")
+                        .HasColumnType("int");
 
                     b.Property<int>("BookingStatus")
                         .HasColumnType("int");
@@ -321,6 +288,10 @@ namespace ReservationSystem.Data.Migrations
                         .HasColumnType("time");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Id")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -338,10 +309,6 @@ namespace ReservationSystem.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SeatingAreaArea")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("SessionType")
                         .HasColumnType("int");
 
@@ -351,85 +318,7 @@ namespace ReservationSystem.Data.Migrations
 
                     b.HasKey("Contact", "ResDate", "StartTime");
 
-                    b.HasIndex("SeatingAreaArea");
-
                     b.ToTable("Reservation");
-                });
-
-            modelBuilder.Entity("ReservationSystem.Models.SeatingArea", b =>
-                {
-                    b.Property<string>("Area")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Area");
-
-                    b.ToTable("SeatingArea");
-
-                    b.HasData(
-                        new
-                        {
-                            Area = "Main"
-                        },
-                        new
-                        {
-                            Area = "Outside"
-                        },
-                        new
-                        {
-                            Area = "Balcony"
-                        });
-                });
-
-            modelBuilder.Entity("ReservationSystem.Models.Session", b =>
-                {
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Type");
-
-                    b.ToTable("Session");
-
-                    b.HasData(
-                        new
-                        {
-                            Type = "Breakfast"
-                        },
-                        new
-                        {
-                            Type = "Lunch"
-                        },
-                        new
-                        {
-                            Type = "Dinner"
-                        });
-                });
-
-            modelBuilder.Entity("ReservationSystem.Models.Sitting", b =>
-                {
-                    b.Property<int>("TableId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("Contact")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnOrder(2);
-
-                    b.Property<DateTime>("ResDate")
-                        .HasColumnType("date")
-                        .HasColumnOrder(3);
-
-                    b.Property<TimeSpan>("StartTime")
-                        .HasColumnType("time")
-                        .HasColumnOrder(4);
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("TableId", "Contact", "ResDate", "StartTime");
-
-                    b.HasIndex("Contact", "ResDate", "StartTime");
-
-                    b.ToTable("Sitting");
                 });
 
             modelBuilder.Entity("ReservationSystem.Models.Table", b =>
@@ -440,49 +329,19 @@ namespace ReservationSystem.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Area")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SeatingAreaArea")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Area")
+                        .HasColumnType("int");
 
                     b.Property<int>("Seats")
                         .HasColumnType("int");
 
+                    b.Property<string>("TableNum")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("SeatingAreaArea");
-
                     b.ToTable("Table");
-                });
-
-            modelBuilder.Entity("ReservationSystem.Models.TableStatus", b =>
-                {
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Status");
-
-                    b.ToTable("TableStatus");
-
-                    b.HasData(
-                        new
-                        {
-                            Status = "Open"
-                        },
-                        new
-                        {
-                            Status = "Closed"
-                        },
-                        new
-                        {
-                            Status = "Reserved"
-                        },
-                        new
-                        {
-                            Status = "Occupied"
-                        });
                 });
 
             modelBuilder.Entity("ReservationSystem.Models.ApplicationUser", b =>
@@ -551,45 +410,6 @@ namespace ReservationSystem.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ReservationSystem.Models.Reservation", b =>
-                {
-                    b.HasOne("ReservationSystem.Models.SeatingArea", "SeatingArea")
-                        .WithMany()
-                        .HasForeignKey("SeatingAreaArea")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SeatingArea");
-                });
-
-            modelBuilder.Entity("ReservationSystem.Models.Sitting", b =>
-                {
-                    b.HasOne("ReservationSystem.Models.Table", "Table")
-                        .WithMany()
-                        .HasForeignKey("TableId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ReservationSystem.Models.Reservation", "Reservation")
-                        .WithMany()
-                        .HasForeignKey("Contact", "ResDate", "StartTime")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Reservation");
-
-                    b.Navigation("Table");
-                });
-
-            modelBuilder.Entity("ReservationSystem.Models.Table", b =>
-                {
-                    b.HasOne("ReservationSystem.Models.SeatingArea", "SeatingArea")
-                        .WithMany()
-                        .HasForeignKey("SeatingAreaArea");
-
-                    b.Navigation("SeatingArea");
                 });
 #pragma warning restore 612, 618
         }
