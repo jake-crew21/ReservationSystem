@@ -1,95 +1,54 @@
 ﻿@model IEnumerable<ReservationSystem.Models.Reservation>
+<!-- https://kontext.tech/article/234/retrieve-identity-username-email-and-other-information-in-aspnet-core -->
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
 
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Index</h1>
-
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NoOfPpl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NoOfTable)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Duration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Source)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BookingStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SessionType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Area)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NoOfPpl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NoOfTable)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Duration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Source)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BookingStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SessionType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Area)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<section id="booking-index" class="booking-index row">
+    <div class="section-title">
+        <h1>All Reservantions</h1>
+        <h4>Hi @user.FirstName</h4>
+        <br/>
+        <a type="button" class="btn-primary" asp-action="Create">
+            <span class="glyphicon glyphicon-plus"></span>
+            <span> New Booking</span>
+        </a>
+    </div>
+
+    @foreach (var item in Model)
+    {
+        <div class="card booking-card">
+            <div class="card-header">
+                <h4>@Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)</h4>
+                <h5>@item.ResDate.ToShortDateString()</h5>
+                <h5>@item.StartTime.ToShortTimeString()</h5>
+                <h5>@Html.DisplayFor(m => item.SessionType)</h5>
+            </div>
+            <div class="card-body">
+                <h6>People: @Html.DisplayFor(m => item.NoOfPpl)</h6>
+                <h6>Tables: @Html.DisplayFor(m => item.NoOfTable)</h6>
+                <h5>Status: @Html.DisplayFor(m => item.BookingStatus)</h5>
+            </div>
+            <div class="card-footer">
+                @Html.ActionLink("Edit", "Edit", new { contact = item.Contact, date = item.ResDate, time = item.StartTime}) |
+                @Html.ActionLink("Details", "Details", new { contact = item.Contact, date = item.ResDate, time = item.StartTime }) |
+                @Html.ActionLink("Delete", "Delete", new { contact = item.Contact, date = item.ResDate, time = item.StartTime })
+            </div>
+            <div class="card-approve-bttn">
+                @*@Html.ActionLink("Approve", "Approve" , new { contact = item.Contact, date = item.ResDate, time = item.StartTime })*@
+                <a type="button" class="btn-success" href="@Url.Action("Approve", new { contact = item.Contact, date = item.ResDate, time = item.StartTime })">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <span>Approve</span>
+                </a>
+            </div>
+        </div>
+    }
+</section>

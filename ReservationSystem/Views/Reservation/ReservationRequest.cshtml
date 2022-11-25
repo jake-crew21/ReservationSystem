@@ -1,8 +1,15 @@
 ﻿@model ReservationSystem.Models.Reservation
+<!-- https://kontext.tech/article/234/retrieve-identity-username-email-and-other-information-in-aspnet-core -->
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "ReservationRequest";
 }
+
 <section id="book-a-table" class="book-a-table">
     <div class="container">
         <div class="section-title">
@@ -35,26 +42,13 @@
                     <select asp-for="Area" class="form-control" asp-items="Html.GetEnumSelectList<Reservation.AreaEnum>()"></select>
                     <span asp-validation-for="Area" class="text-danger"></span>
                 </div>
-                <div class="col-lg-4 col-md-6 form-group">
-                    <select asp-for="SessionType" class="form-control" asp-items="Html.GetEnumSelectList<Reservation.SessionEnum>()"></select>
-                    <span asp-validation-for="SessionType" class="text-danger"></span>
-                </div>
-                <div class="col-lg-4 col-md-6 form-group">
-                    <select asp-for="Source" class="form-control">
-                        <option value="online">Online</option>
-                        <option value="in-person">In-Person</option>
-                        <option value="email">Email</option>
-                        <option value="phone">Phone</option>
-                    </select>
-                    <span asp-validation-for="Source" class="text-danger"></span>
-                </div>
             </div>
             <div class="form-group mt-3">
                 <textarea class="form-control" rows="5" placeholder="Notes: additional contacts, dietry requirements, prefered space within selected area"></textarea>
             </div>
             <div class="text-center">
                 <input type="submit" value="Request Reservation" class="request"/>
-                <a type="button" class="back" href="@Url.Action("Index")">
+                <a type="button" class="back" href="@Url.Action("UserIndex")">
                     <span class="glyphicon glyphicon-list"></span>
                     <span>Go Back</span>
                 </a>
@@ -62,7 +56,6 @@
         </form>
     </div>
 </section>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

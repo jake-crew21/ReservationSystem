@@ -1,17 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReservationSystem.Models
 {
     public class SittingSchedule
     {
+        [Required, DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime StartDate { get; set; }
+        [Required, DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime EndDate { get; set; }
+        [Required, DataType(DataType.Time)]
+        public TimeSpan StartTime { get; set; }
+        [Required, DataType(DataType.Time)]
+        public TimeSpan EndTime { get; set; }
         [Required]
-        public DateOnly StartDate { get; set; }
-        [Required]
-        public DateOnly EndDate { get; set; }
-        [Required]
-        public TimeOnly StartTime { get; set; }
-        [Required]
-        public TimeOnly EndTime { get; set; }
+        public int Capacity { get; set; }
         [Required]
         public SessionEnum SessionType { get; set; }
         public enum SessionEnum
@@ -21,7 +26,5 @@ namespace ReservationSystem.Models
             Dinner,
             SpecialEvent
         }
-        [Required]
-        public DayOfWeek DayOfWeek { get; set; }
     }
 }

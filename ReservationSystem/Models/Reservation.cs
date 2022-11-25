@@ -9,13 +9,15 @@ namespace ReservationSystem.Models
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
-        public string Id { get; set; }
+        public string? Id { get; set; }
         [Key, Column(Order = 1)]
         [Required]
         public string Contact { get; set; }
         [Required]
         public int NoOfPpl { get; set; }
-        public int NoOfTable { get; set; }
+        public int? NoOfTable { get; set; }
+        [Required]
+        public DateTime DateTime { get; set; }
         [Key, Column(Order=2)]
         [Required]
         public DateOnly ResDate { get; set; }
@@ -26,7 +28,7 @@ namespace ReservationSystem.Models
         public TimeOnly EndTime { get; set; }
         [Required]
         public int Duration { get; set; }
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
         public string Source { get; set; }
         [Required]
         public StatusEnum BookingStatus { get; set; }

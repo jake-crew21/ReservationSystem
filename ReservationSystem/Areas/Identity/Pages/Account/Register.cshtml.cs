@@ -31,11 +31,16 @@ namespace ReservationSystem.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
+        //Add roile support - assign default role to user on registration
+        private readonly RoleManager<IdentityRole> _roleManger;
+        private readonly string _defaultUserRole = "User";
+
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
+            RoleManager<IdentityRole> roleManger,   //Added role manager
             IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -43,6 +48,7 @@ namespace ReservationSystem.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
+            _roleManger = roleManger;
             _emailSender = emailSender;
         }
 
@@ -75,6 +81,10 @@ namespace ReservationSystem.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+            [Required]
+            public string FirstName { get; set; }
+            [Required]
+            public string LastName { get; set; }
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -114,6 +124,8 @@ namespace ReservationSystem.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -122,6 +134,16 @@ namespace ReservationSystem.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    //Find default role to assign to the user
+                    var defaultRole = await _roleManger.FindByNameAsync(_defaultUserRole);
+
+                    if (defaultRole != null)
+                    {
+                        //Assign default role to new user
+                        await _userManager.AddToRoleAsync(user, defaultRole.Name);
+                        _logger.LogInformation($"Role '{defaultRole}' was assigned to new user '{user.UserName}'");
+                    }
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

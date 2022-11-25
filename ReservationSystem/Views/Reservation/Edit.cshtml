@@ -22,6 +22,11 @@
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Contact" class="control-label"></label>
+                <input asp-for="Contact" class="form-control" />
+                <span asp-validation-for="Contact" class="text-danger"></span>
+            </div>
             <input type="hidden" asp-for="Contact" />
             <div class="form-group">
                 <label asp-for="NoOfPpl" class="control-label"></label>
@@ -33,13 +38,13 @@
                 <input asp-for="NoOfTable" class="form-control" />
                 <span asp-validation-for="NoOfTable" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="DateTime" class="control-label"></label>
+                <input asp-for="DateTime" class="form-control" />
+                <span asp-validation-for="DateTime" class="text-danger" type="datetime-local"></span>
+            </div>
             <input type="hidden" asp-for="ResDate" />
             <input type="hidden" asp-for="StartTime" />
-            <div class="form-group">
-                <label asp-for="EndTime" class="control-label"></label>
-                <input asp-for="EndTime" class="form-control" />
-                <span asp-validation-for="EndTime" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="Duration" class="control-label"></label>
                 <input asp-for="Duration" class="form-control" />
@@ -57,17 +62,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="BookingStatus" class="control-label"></label>
-                <select asp-for="BookingStatus" class="form-control"></select>
+                <select asp-for="BookingStatus" asp-items="Html.GetEnumSelectList<Reservation.StatusEnum>()"></select>
                 <span asp-validation-for="BookingStatus" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SessionType" class="control-label"></label>
-                <select asp-for="SessionType" class="form-control"></select>
-                <span asp-validation-for="SessionType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Area" class="control-label"></label>
-                <input asp-for="Area" class="form-control" />
+                <select asp-for="Area" asp-items="Html.GetEnumSelectList<Reservation.AreaEnum>()"></select>
                 <span asp-validation-for="Area" class="text-danger"></span>
             </div>
             <div class="form-group">

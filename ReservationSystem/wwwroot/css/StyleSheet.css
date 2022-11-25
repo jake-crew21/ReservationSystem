@@ -1,0 +1,546 @@
+﻿body {
+    font-family: "Baskerville Old Face", 'Sans Serif Collection';
+    background: #0c0b09;
+    color: #fff;
+    margin: 0;
+    min-height: 100%;
+}
+
+.main {
+
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-family: serif;
+}
+
+#header {
+    /*background: #30343F;*/
+    /*border-bottom: 1px solid #30343F;
+    transition: all 0.5s;
+    z-index: 997;
+    padding: 15px 0;
+    top: 40px;*/
+}
+
+.logo {
+    font-size: 28px;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    font-weight: 300;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: "Baskerville Old Face", sans-serif;
+    color: #FAFAFF;
+    top: 40px;
+    opacity: revert;
+}
+
+
+.navbar {
+    padding: 15px;
+    background: #30343F;
+    opacity: 0.5;
+    flex: 1;
+    height: 61px;
+    align-content: center;
+}
+
+.navbar ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.nav-link {
+    position: relative;
+    color: #FAFAFF;
+    font-size: 20px;
+}
+
+.navbar-brand {
+    font-size: 34px;
+}
+
+.nav-item {
+    padding-left: 10px;
+    padding-right: 10px;
+    opacity: revert;
+}
+
+.navbar active {
+    color: #E4D9FF;
+}
+
+.no-bulet {
+    list-style-type: none;
+}
+
+.bi-check-circle {
+    color: #E4D9FF;
+}
+
+.page-section {
+    align-items: center;
+    color: #30343F;
+    background-color: #E4D9FF;
+    display: flex;
+}
+
+.content-wrapper {
+    justify-content: center;
+    max-width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.content {
+    margin-top: 70px;
+    margin-bottom: 70px;
+}
+
+.page-section-dark {
+    align-items: center;
+    color: #E4D9FF;
+    background-color: #30343F;
+    display: flex;
+}
+
+#welcome {
+    width: 100%;
+    height: 100vh;
+    background: url("../Images/hero-bg.jpg") top center;
+    background-size: cover;
+    position: center;
+    padding: 0;
+}
+
+#welcome:before {
+    content: "";
+    background: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+#welcome .container {
+    padding-top: 110px;
+}
+
+@media (max-width: 992px) {
+    #welcome .container {
+        padding-top: 98px;
+    }
+}
+
+#welcome h1 {
+    margin: 0;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 56px;
+    color: #fff;
+    font-family: "Baskerville Old Face", sans-serif;
+}
+
+#welcome h1 span {
+    color: #cda45e;
+}
+
+#welcome h2 {
+    color: #eee;
+    margin-bottom: 10px 0 0 0;
+    font-size: 22px;
+}
+
+#welcome .btns {
+    margin-top: 30px;
+}
+
+#welcome .btn-menu,
+#welcome .btn-book {
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 12px 30px;
+    border-radius: 50px;
+    transition: 0.3s;
+    line-height: 1;
+    color: #FAFAFF;
+    border: 2px solid #273469;
+}
+
+#welcome .btn-menu:hover,
+#welcome .btn-book:hover {
+    background: #273469;
+    color: #FAFAFF;
+}
+
+@media (min-width: 1024px) {
+    #welcome {
+    background-attachment: fixed;
+    }
+}
+
+@media (max-height: 500px) {
+    #welcome {
+        height: auto;
+    }
+
+    #welcome .container {
+        padding-top: 130px;
+        padding-bottom: 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    #welcome h1 {
+        font-size: 28px;
+        line-height: 36px;
+    }
+
+    #welcome h2 {
+        font-size: 18px;
+        line-height: 24px;
+    }
+}
+
+section {
+    padding: 60px 0;
+    overflow: hidden;
+}
+
+.about {
+    background: url("../Images/about-bg.jpg") center center;
+    background-size: cover;
+    position: relative;
+    padding: 80px 0;
+}
+
+.about:before {
+    content: "";
+    background: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.about .about-img {
+    position: relative;
+    transition: 0.5s;
+}
+
+.about .about-img img {
+    max-width: 100%;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+}
+
+.about .about-img::before {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    width: 60px;
+    height: 60px;
+    z-index: 1;
+    content: "";
+    border-left: 5px solid #cda45e;
+    border-top: 5px solid #cda45e;
+    transition: 0.5s;
+}
+
+.about .about-img::after {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    width: 60px;
+    height: 60px;
+    z-index: 2;
+    content: "";
+    border-right: 5px solid #cda45e;
+    border-bottom: 5px solid #cda45e;
+    transition: 0.5s;
+}
+
+.about .about-img:hover {
+    transform: scale(1.03);
+}
+
+.about .about-img:hover::before {
+    left: 10px;
+    top: 10px;
+}
+
+.about .about-img:hover::after {
+    right: 10px;
+    bottom: 10px;
+}
+
+.about .content h3 {
+    font-weight: 600;
+    font-size: 26px;
+}
+
+.about .content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.about .content ul li {
+    
+}
+
+.about .content ul i {
+    font-size: 20px;
+    padding-right: 4px;
+    color: #cda45e;
+}
+
+.about .content p:last-child {
+    margin-bottom: 0;
+}
+
+@media (min-width: 1024px) {
+    .about {
+        background-attachment: fixed;
+    }
+}
+
+.back-to-top {
+    position: fixed;
+    visibility: hidden;
+    opacity: 0;
+    right: 15px;
+    bottom: 15px;
+    z-index: 996;
+    width: 44px;
+    height: 44px;
+    border-radius: 50px;
+    transition: all 0.4s;
+    border: 2px solid #273469;
+}
+.back-to-top i {
+    font-size: 28px;
+    color: #273469;
+    line-height: 0;
+}
+
+.back-to-top:hover {
+    background: #273469;
+    color: #1E2749;
+}
+
+.back-to-top:hover i {
+    color: #30343F;
+}
+
+.back-to-top.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+@media screen and (max-width: 768px) {
+    [data-aos-delay] {
+        transition-delay: 0 !important;
+    }
+}
+
+.events {
+    background: url(../Images/events-bg.jpg) center center no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.events::before {
+    content: "";
+    background-color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.events .section-title h2 {
+    color: #FAFAFF;
+}
+
+.events .container {
+    position: relative;
+}
+
+@media (min-width: 1024px) {
+    .events {
+        background-attachment: fixed;
+    }
+}
+
+.events .events-carousel {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 30px;
+}
+
+.events .event-item {
+    color: #FAFAFF;
+}
+
+.events .event-item h3 {
+    font-weight: 600;
+    font-size: 26px;
+    color: #E4D9FF;
+}
+
+.events .event-item .price {
+    font-size: 26px;
+    font-family: "Baskerville Old Face", sans-serif;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.events .event-item .price span {
+    border-bottom: 2px solid #273469;
+}
+
+.events .event-item ul {
+    list-style: none;
+    padding: 0;
+}
+
+.events .event-item ul li {
+    padding-bottom: 10px;
+}
+
+.events .event-item ul i {
+    font-size: 20px;
+    padding-right: 4px;
+    color: #273469;
+}
+
+.events .event-item p:last-child {
+    margin-bottom: 0;
+}
+
+.events .swiper-pagination {
+    margin-top: 30px;
+    position: relative;
+}
+
+.events .swiper-pagination .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.4);
+    opacity: 1;
+}
+
+.events .swiper-pagination .swiper-pagination-bullet-active {
+    background-color: #E4D9FF;
+}
+
+.book-a-table {
+    height: 100vh;
+    background-image: url(../Images/about-bg.jpg);
+    background-position: center;
+}
+
+.book-a-table .container {
+    
+}
+
+.book-a-table section {
+    
+}
+
+.book-a-table .form-group {
+    padding-bottom: 8px;
+}
+
+.book-a-table input,
+.book-a-table textarea,
+.book-a-table select {
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 20px;
+    background: #0c0b09;
+    border-color: #625b4b;
+    color: white;
+}
+
+.book-a-table input::-moz-placeholder,
+.book-a-table textarea::-moz-placeholder {
+    color: #a49b89;
+}
+
+.book-a-table input:focus,
+.book-a-table textarea:focus {
+    border-color: #E4D9FF;
+}
+
+.book-a-table input {
+    height: 44px;
+}
+
+.book-a-table textarea {
+    padding: 10px 35px;
+}
+
+.book-a-table .request {
+    background: #1E2749;
+    border: 0;
+    padding: 10px 35px;
+    color: #fff;
+    transition: 0.4s;
+    border-radius: 50px;
+}
+
+.book-a-table .request:hover {
+    background: #273469;
+}
+
+.book-a-table .back {
+    background: #b40404;
+    border: 0;
+    padding: 10px 35px;
+    color: #fff;
+    transition: 0.4s;
+    border-radius: 50px;
+}
+
+.book-a-table .back:hover {
+    background: #e50404;
+}
+
+.booking-index {
+    justify-content: space-evenly;
+    padding: 80px;
+}
+
+.booking-card {
+    height: 400px;
+    width: 300px;
+    align-content: center;
+    background-color: #273469;
+    padding: 12px;
+    margin-bottom: 50px;
+}
+
+.booking-card
+.card-footer {
+    align-content: center;
+}
+
+.card-approve-bttn {
+    align-items: center;
+}
+
+.card-approve-bttn
+.btn-success {
+
+}

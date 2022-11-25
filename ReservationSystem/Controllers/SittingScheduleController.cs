@@ -27,15 +27,15 @@ namespace ReservationSystem.Controllers
         }
 
         // GET: SittingSchedule/Details/5
-        public async Task<IActionResult> Details(int id, DateOnly sd)
+        public async Task<IActionResult> Details(int id)
         {
-            if ((id == null && sd == null) || _context.SittingSchedule == null)
+            if ((id == null) || _context.SittingSchedule == null)
             {
                 return NotFound();
             }
 
             var sittingSchedule = await _context.SittingSchedule
-                .FirstOrDefaultAsync(m => ((int)m.SessionType) == id && m.StartDate == sd);
+                .FirstOrDefaultAsync(m => ((int)m.SessionType) == id);
             if (sittingSchedule == null)
             {
                 return NotFound();
@@ -51,11 +51,9 @@ namespace ReservationSystem.Controllers
         }
 
         // POST: SittingSchedule/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StartDate,EndDate,StartTime,EndTime,SessionType,DayOfWeek")] SittingSchedule sittingSchedule)
+        public async Task<IActionResult> Create(SittingSchedule sittingSchedule)
         {
             if (ModelState.IsValid)
             {
@@ -67,14 +65,14 @@ namespace ReservationSystem.Controllers
         }
 
         // GET: SittingSchedule/Edit/5
-        public async Task<IActionResult> Edit(int id, DateOnly sd)
+        public async Task<IActionResult> Edit(int sessionTypeId)
         {
-            if ((id == null && sd == null) || _context.SittingSchedule == null)
+            if (sessionTypeId == null || _context.SittingSchedule == null)
             {
                 return NotFound();
             }
 
-            var sittingSchedule = await _context.SittingSchedule.FindAsync(id, sd);
+            var sittingSchedule = await _context.SittingSchedule.FindAsync(sessionTypeId);
             if (sittingSchedule == null)
             {
                 return NotFound();
@@ -83,13 +81,11 @@ namespace ReservationSystem.Controllers
         }
 
         // POST: SittingSchedule/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int sessionTypeId, DateOnly sd, [Bind("StartDate,EndDate,StartTime,EndTime,SessionType,DayOfWeek")] SittingSchedule sittingSchedule)
+        public async Task<IActionResult> Edit(int sessionTypeId, SittingSchedule sittingSchedule)
         {
-            if (sessionTypeId != ((int)sittingSchedule.SessionType) && sd != sittingSchedule.StartDate)
+            if (sessionTypeId != (int)sittingSchedule.SessionType)
             {
                 return NotFound();
             }
@@ -103,7 +99,7 @@ namespace ReservationSystem.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SittingScheduleExists(((int)sittingSchedule.SessionType), sittingSchedule.StartDate))
+                    if (!SittingScheduleExists((int)sittingSchedule.SessionType))
                     {
                         return NotFound();
                     }
@@ -118,15 +114,15 @@ namespace ReservationSystem.Controllers
         }
 
         // GET: SittingSchedule/Delete/5
-        public async Task<IActionResult> Delete(int sessionTypeId, DateOnly sd)
+        public async Task<IActionResult> Delete(int sessionTypeId)
         {
-            if ((sessionTypeId == null && sd == null) || _context.SittingSchedule == null)
+            if (sessionTypeId == null || _context.SittingSchedule == null)
             {
                 return NotFound();
             }
 
             var sittingSchedule = await _context.SittingSchedule
-                .FirstOrDefaultAsync(m => ((int)m.SessionType) == sessionTypeId && m.StartDate == sd);
+                .FirstOrDefaultAsync(m => ((int)m.SessionType) == sessionTypeId);
             if (sittingSchedule == null)
             {
                 return NotFound();
@@ -138,13 +134,13 @@ namespace ReservationSystem.Controllers
         // POST: SittingSchedule/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id, DateOnly sd)
+        public async Task<IActionResult> DeleteConfirmed(int sessionTypeId)
         {
             if (_context.SittingSchedule == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.SittingSchedule'  is null.");
             }
-            var sittingSchedule = await _context.SittingSchedule.FindAsync(id, sd);
+            var sittingSchedule = await _context.SittingSchedule.FindAsync(sessionTypeId);
             if (sittingSchedule != null)
             {
                 _context.SittingSchedule.Remove(sittingSchedule);
@@ -154,9 +150,9 @@ namespace ReservationSystem.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SittingScheduleExists(int sessionTypeId, DateOnly sd)
+        private bool SittingScheduleExists(int sessionTypeId)
         {
-          return _context.SittingSchedule.Any(e => ((int)e.SessionType) == sessionTypeId && e.StartDate == sd);
+          return _context.SittingSchedule.Any(e => ((int)e.SessionType) == sessionTypeId);
         }
     }
 }

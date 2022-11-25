@@ -1,45 +1,5 @@
 html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-html {
   position: relative;
+  width: 100%;
   min-height: 100%;
-}
-
-body {
-  margin-bottom: 60px;
-  font-family: 'Baskerville Old Face';
-}
-
-.section-background{
-    
-}
-.page-section{
-    align-items: center;
-    color: black;
-    background-color: white;
-    display: flex;
-}
-.content-wrapper{
-    justify-content:center;
-    max-width: 100%;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-.content{
-    margin-top:70px;
-    margin-bottom:70px;
-}
-.page-section-dark {
-    align-items: center;
-    color: white;
-    background-color: black;
-    display: flex;
 }

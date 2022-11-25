@@ -20,7 +20,7 @@ namespace ReservationSystem.Data
         {
             //Set HasKey for composite keys
             builder.Entity<Reservation>().HasKey(k => new { k.Contact, k.ResDate, k.StartTime });
-            builder.Entity<SittingSchedule>().HasKey(k => new { k.SessionType, k.StartDate });
+            builder.Entity<SittingSchedule>().HasKey(k => new { k.SessionType });
             //use OnModleCreating method to pre-pop your Db for marking purpose;
             builder.Entity<AccountType>(e => e.Property(e => e.Id).ValueGeneratedOnAdd());
             builder.Entity<Table>(e => e.Property(e => e.Id).ValueGeneratedOnAdd());
