@@ -1,47 +1,64 @@
 ﻿@model IEnumerable<ReservationSystem.Models.Table>
 
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Seats)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Area)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TableNum)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Seats)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Area)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TableNum)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<section id="Table-Index" class="Table-Index row">
+    <div class="section-title">
+        <h1>Tables</h1>
+        <h4>Hi @user.FirstName</h4>
+    </div>
+    <div class="area-picker">
+        <a type="button" class="button-64" href="@Url.Action("Index")">
+            <span>Overview</span>
+        </a>
+        <a type="button" class="button-64" href="@Url.Action("IndexArea", new {area = Table.AreaEnum.Main})">
+            <span>Main</span>
+        </a>
+        <a type="button" class="button-64" href="@Url.Action("IndexArea", new {area = Table.AreaEnum.Outside})">
+            <span>Outside</span>
+        </a>
+        <a type="button" class="button-64" href="@Url.Action("IndexArea", new {area = Table.AreaEnum.Balcony})">
+            <span>Balcony</span>
+        </a>
+    </div>
+    <div class="card table-card">
+        <div class="card-header">
+            <h2>Main</h2>
+        </div>
+        <div class="card-body">
+            <h3>Tables: @Model.Where(a => a.Area == Table.AreaEnum.Main).Count()</h3>
+        </div>
+        <div class="card-footer">
+            <a type="button" class="button-64" href="@Url.Action("QuickAdd", new {area = Table.AreaEnum.Main})">
+                <span>+</span>
+            </a>
+            <a type="button" class="button-64" href="@Url.Action("QuickRemove", new {area = Table.AreaEnum.Main})">
+                <span>-</span>
+            </a>
+        </div>
+    </div>
+    <div class="card table-card">
+        <div class="card-header">
+            <h2>OutSide</h2>
+        </div>
+        <div class="card-body">
+            <h3>Tables: @Model.Where(a => a.Area == Table.AreaEnum.Outside).Count()</h3>
+        </div>
+    </div>
+    <div class="card table-card">
+        <div class="card-header">
+            <h2>Balcony</h2>
+        </div>
+        <div class="card-body">
+            <h3>Tables: @Model.Where(a => a.Area == Table.AreaEnum.Balcony).Count()</h3>
+        </div>
+    </div>
+</section>

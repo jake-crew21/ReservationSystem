@@ -22,7 +22,14 @@ namespace ReservationSystem.Controllers
         // GET: Table
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Table.ToListAsync());
+            return View(await _context.Table.ToListAsync());
+        }
+
+        //GET: Table (by area)
+        public async Task<IActionResult> IndexArea(Table.AreaEnum area)
+        {
+            var filter = await _context.Table.AsQueryable().Where(a => a.Area == area).ToListAsync();
+            return View(filter);
         }
 
         // GET: Table/Details/5
@@ -54,8 +61,38 @@ namespace ReservationSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Seats,Area,TableNum")] Table table)
+        public async Task<IActionResult> Create(Table table)
         {
+            //var tableInArea = await _context.Table.AsQueryable().Where(a => a.Area == table.Area).ToListAsync();
+            //int tbNum = tableInArea.Count() + 1;
+            //if (table.Area == Table.AreaEnum.Main)
+            //{
+            //    table.TableNum = "M" + tbNum.ToString();
+            //    if (table.Seats == null)
+            //    {
+            //        table.Seats = 4;
+            //    }
+            //}
+            //else if (table.Area == Table.AreaEnum.Balcony)
+            //{
+            //    table.TableNum = "B" + tbNum.ToString();
+            //    if (table.Seats == null)
+            //    {
+            //        table.Seats = 2;
+            //    }
+            //}
+            //else if (table.Area == Table.AreaEnum.Outside)
+            //{
+            //    table.TableNum = "O" + tbNum.ToString();
+            //    if (table.Seats == null)
+            //    {
+            //        table.Seats = 2;
+            //    }
+            //}
+
+            //ModelState.Clear();
+            //TryValidateModel(table);
+            
             if (ModelState.IsValid)
             {
                 _context.Add(table);
@@ -63,6 +100,69 @@ namespace ReservationSystem.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(table);
+        }
+
+        //POST: Table/Create (QuickAdd)
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> QuickAdd(Table.AreaEnum area)
+        {
+            Table table = null;
+            table.Area = area;
+            var tableInArea = await _context.Table.AsQueryable().Where(a => a.Area == area).ToListAsync();
+            int tbNum = tableInArea.Count() + 1;
+            if (table.Area == Table.AreaEnum.Main)
+            {
+                table.TableNum = "M" + tbNum.ToString();
+                if (table.Seats == null)
+                {
+                    table.Seats = 4;
+                }
+            }
+            else if (table.Area == Table.AreaEnum.Balcony)
+            {
+                table.TableNum = "B" + tbNum.ToString();
+                if (table.Seats == null)
+                {
+                    table.Seats = 2;
+                }
+            }
+            else if (table.Area == Table.AreaEnum.Outside)
+            {
+                table.TableNum = "O" + tbNum.ToString();
+                if (table.Seats == null)
+                {
+                    table.Seats = 2;
+                }
+            }
+
+            ModelState.Clear();
+            TryValidateModel(table);
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(table);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(table);
+        }
+
+        //POST: Table/Delete (QuickRemove)
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> QuickRemove(Table.AreaEnum area)
+        {
+            var tableInArea = await _context.Table.AsQueryable().Where(a => a.Area == area).ToListAsync();
+            Table table = tableInArea.LastOrDefault();
+            if (table != null)
+            {
+                //_context.Table.Remove(table);
+                return RedirectToAction(nameof(Index));
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Table/Edit/5
@@ -86,7 +186,7 @@ namespace ReservationSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Seats,Area,TableNum")] Table table)
+        public async Task<IActionResult> Edit(int id, Table table)
         {
             if (id != table.Id)
             {

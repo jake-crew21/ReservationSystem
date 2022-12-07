@@ -8,7 +8,7 @@
         <div class="section-title">
             <h2>Reservations</h2>
         </div>
-        <form asp-action="ReservationRequest">
+        <form asp-action="Create">
             <div class="row">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="col-lg-4 col-md-6 form-group">
@@ -46,14 +46,13 @@
                         <option value="email">Email</option>
                         <option value="phone">Phone</option>
                     </select>
-                    <span asp-validation-for="Source" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group mt-3">
-                <textarea class="form-control" rows="5" placeholder="Notes: additional contacts, dietry requirements, prefered space within selected area"></textarea>
+                <textarea asp-for="Notes" class="form-control" rows="5" placeholder="Notes: additional contacts, dietry requirements, prefered space within selected area"></textarea>
             </div>
             <div class="text-center">
-                <input type="submit" value="Request Reservation" class="request"/>
+                <input type="submit" value="Request" class="request"/>
                 <a type="button" class="back" href="@Url.Action("Index")">
                     <span class="glyphicon glyphicon-list"></span>
                     <span>Go Back</span>

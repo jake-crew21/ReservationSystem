@@ -444,6 +444,98 @@ section {
     background-color: #E4D9FF;
 }
 
+.menu #menu-flters {
+    padding: 0;
+    margin: 0 auto 0 auto;
+    list-style: none;
+    text-align: center;
+    border-radius: 50px;
+}
+
+.menu #menu-flters li {
+    cursor: pointer;
+    display: inline-block;
+    padding: 8px 12px 10px 12px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1;
+    color: #fff;
+    margin-bottom: 10px;
+    transition: all ease-in-out 0.3s;
+    border-radius: 50px;
+    font-family: "Playfair Display", serif;
+}
+
+.menu #menu-flters li:hover,
+.menu #menu-flters li.filter-active {
+    color: #cda45e;
+}
+
+.menu #menu-flters li:last-child {
+    margin-right: 0;
+}
+
+.menu .menu-item {
+    margin-top: 50px;
+}
+
+.menu .menu-img {
+    width: 70px;
+    border-radius: 50%;
+    float: left;
+    border: 5px solid rgba(255, 255, 255, 0.2);
+}
+
+.menu .menu-content {
+    margin-left: 85px;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.menu .menu-content::after {
+    content: "......................................................................""....................................................................""....................................................................";
+    position: absolute;
+    left: 20px;
+    right: 0;
+    top: -4px;
+    z-index: 1;
+    color: #bab3a6;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+.menu .menu-content a {
+    padding-right: 10px;
+    background: #1a1814;
+    position: relative;
+    z-index: 3;
+    font-weight: 700;
+    color: white;
+    transition: 0.3s;
+}
+
+.menu .menu-content a:hover {
+    color: #cda45e;
+}
+
+.menu .menu-content span {
+    background: #1a1814;
+    position: relative;
+    z-index: 3;
+    padding: 0 10px;
+    font-weight: 600;
+    color: #cda45e;
+}
+
+.menu .menu-ingredients {
+    margin-left: 85px;
+    font-style: italic;
+    font-size: 14px;
+    font-family: "Poppins", sans-serif;
+    color: rgba(255, 255, 255, 0.5);
+}
+
 .book-a-table {
     height: 100vh;
     background-image: url(../Images/about-bg.jpg);
@@ -543,4 +635,133 @@ section {
 .card-approve-bttn
 .btn-success {
 
+}
+
+.session-picker {
+    display: flex;
+    justify-content: space-evenly;
+    padding-bottom: 50px;
+}
+
+/*https://getcssscan.com/css-buttons-examples*/
+.button-64 {
+    align-items: center;
+    background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+    border: 0;
+    border-radius: 8px;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    display: flex;
+    font-family: Phantomsans, sans-serif;
+    font-size: 20px;
+    justify-content: center;
+    line-height: 1em;
+    max-width: 100%;
+    min-width: 140px;
+    padding: 3px;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    cursor: pointer;
+    text-align: center;
+}
+
+.button-64:active,
+.button-64:hover {
+    outline: 0;
+}
+
+.button-64 span {
+    background-color: rgb(5, 6, 45);
+    padding: 16px 24px;
+    border-radius: 6px;
+    width: 100%;
+    height: 100%;
+    transition: 300ms;
+}
+
+.button-64:hover span {
+    background: none;
+}
+
+@media (min-width: 768px) {
+    .button-64 {
+        font-size: 24px;
+        min-width: 196px;
+    }
+}
+
+.SittingSchedule-Index {
+    justify-content: space-evenly;
+    padding: 80px;
+}
+
+.schedule-card {
+    height: 400px;
+    width: 300px;
+    align-content: center;
+    background-color: #273469;
+    padding: 12px;
+    margin-bottom: 50px;
+    border-radius: 6px;
+}
+
+.schedule-card
+.card-body {
+    text-align: center;
+}
+
+.schedule-card
+.card-header {
+    text-align: center;
+}
+
+.schedule-card-edit {
+    height: 200px;
+    width: 300px;
+    align-items: center;
+    background-color: #273469;
+    padding: 12px;
+    margin-bottom: 50px;
+    border-radius: 6px;
+    justify-content: space-evenly;
+}
+
+.schedule-card-edit input {
+    width: 150px;
+    height: 60px;
+}
+
+.Table-Index {
+    justify-content: space-evenly;
+    padding: 80px;
+}
+
+.area-picker {
+    display: flex;
+    justify-content: space-evenly;
+    padding-bottom: 50px;
+}
+
+.table-card {
+    height: 400px;
+    width: 300px;
+    align-content: center;
+    background-color: #273469;
+    padding: 12px;
+    margin-bottom: 50px;
+    border-radius: 6px;
+}
+
+.table-card
+.card-body {
+    text-align: center;
+}
+
+.table-card
+.card-header {
+    text-align: center;
 }

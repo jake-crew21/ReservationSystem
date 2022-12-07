@@ -1,40 +1,53 @@
 ﻿@model ReservationSystem.Models.SittingSchedule
 
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+
 @{
     ViewData["Title"] = "Edit";
 }
-
-<h1>Edit</h1>
-
-<h4>SittingSchedule</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="StartDate" />
-            <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartTime" class="control-label"></label>
-                <input asp-for="StartTime" class="form-control" />
-                <span asp-validation-for="StartTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EndTime" class="control-label"></label>
-                <input asp-for="EndTime" class="form-control" />
-                <span asp-validation-for="EndTime" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="SessionType" />
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<section class="SittingSchedule-Index row">
+    <div class="section-title">
+        <h1>Sitting Schedule</h1>
+        <h4>Hi @user.FirstName</h4>
     </div>
-</div>
+    <div class="session-picker">
+        <a type="button" class="button-64" href="@Url.Action("Index")">
+            <span>All</span>
+        </a>
+    </div>
+    <form asp-action="Edit" class="SittingSchedule-Index row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="card schedule-card-edit">
+            <h2>Capacity</h2>
+            <input asp-for="Capacity" class="form-control"/>
+            <span asp-validation-for="Capacity" class="text-danger"></span>
+        </div>
+        <div class="card schedule-card-edit">
+            <h2>Start Date</h2>
+            <input type="date" asp-for="StartDate.Date" class="form-control"/>
+            <span asp-validation-for="StartDate" class="text-danger"></span>
+        </div>
+        <div class="card schedule-card-edit">
+            <h2>End Date</h2>
+            <input type="date" asp-for="EndDate.Date" class="form-control"/>
+            <span asp-validation-for="EndDate" class="text-danger"></span>
+        </div>
+        <div class="card schedule-card-edit">
+            <h2>Start Time</h2>
+            <input asp-for="StartTime" class="form-control"/>
+            <span asp-validation-for="StartTime" class="text-danger"></span>
+        </div>
+        <div class="card schedule-card-edit">
+            <h2>End Time</h2>
+            <input asp-for="EndTime" class="form-control"/>
+            <span asp-validation-for="EndTime" class="text-danger"></span>
+        </div>
+    </form>
+</section>
 
 <div>
     <a asp-action="Index">Back to List</a>

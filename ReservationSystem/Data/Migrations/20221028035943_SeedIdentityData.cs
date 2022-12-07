@@ -23,11 +23,12 @@ namespace ReservationSystem.Migrations
 
             //Add Roles
             string adminId = "709f0502-61e5-4cb6-8006-62dea5efce60";
+            string userId = "db743204-02d3-48df-8225-0200b67eb53b";
             CreateRole(adminId, "Admin");
             CreateRole("22fbfbba-8c7b-4151-a2c5-7bfaec9da649", "Staff");
-            CreateRole("db743204-02d3-48df-8225-0200b67eb53b", "User");
+            CreateRole(userId, "User");
             //Add Users
-            CreateUser("deccbc67-7dba-4807-b26b-dc4627bbf386", "Jarvis", "Smith", "seed1@test.com", "p@ssw0rd", "0400000000");
+            CreateUser("deccbc67-7dba-4807-b26b-dc4627bbf386", "Jarvis", "Smith", "seed1@test.com", "p@ssw0rd", "0400000000", new string[] {userId});
             CreateUser("44b008de-7d31-447c-863f-ef7dca23eaa8", "Dev", "Person", "dev@email.com", "Admin", "", new string[] { adminId });
 
         }

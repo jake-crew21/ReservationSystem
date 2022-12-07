@@ -1,65 +1,48 @@
 ﻿@model IEnumerable<ReservationSystem.Models.SittingSchedule>
 
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Index</h1>
-
-<p>
+@*<p>
     <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Capacity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SessionType)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Capacity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SessionType)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+</p>*@
+<section id="SittingSchedule-Index" class="SittingSchedule-Index row">
+    <div class="section-title">
+        <h1>Sitting Schedule</h1>
+        <h4>Hi @user.FirstName</h4>
+    </div>
+    <div class="session-picker">
+        <a type="button" class="button-64" href="@Url.Action("Edit", new {session = SittingSchedule.SessionEnum.Breakfast})">
+            <span>Breakfast</span>
+        </a>
+        <a type="button" class="button-64" href="@Url.Action("Edit", new {session = SittingSchedule.SessionEnum.Lunch})">
+            <span>Lunch</span>
+        </a>
+        <a type="button" class="button-64" href="@Url.Action("Edit", new {session = SittingSchedule.SessionEnum.Dinner})">
+            <span>Dinner</span>
+        </a>
+    </div>
+    @foreach (var item in Model)
+    {
+        <div class="card schedule-card">
+            <div class="card-header">
+                <h2>@Html.DisplayFor(modelItem => item.SessionType)</h2>
+            </div>
+            <div class="card-body">
+                <h3>Capacity: @Html.DisplayFor(i => item.Capacity)</h3>
+                <h4>@Html.DisplayFor(i => item.StartTime) - @Html.DisplayFor(i => item.EndTime)</h4>
+                <h4>@Html.DisplayFor(i => item.StartDate) - @Html.DisplayFor(i => item.EndDate)</h4>
+            </div>
+            @*<div class="card-footer">
+                <a type="button" class="btn-primary" href="@Url.Action("Edit", new {session = item.SessionType})">
+                    <span>Edit</span>
+                </a>
+            </div>*@
+        </div>
+    }
+</section>

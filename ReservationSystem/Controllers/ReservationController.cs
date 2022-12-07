@@ -18,7 +18,6 @@ using Microsoft.AspNet.Identity;
 
 namespace ReservationSystem.Controllers
 {
-    [Authorize]
     public class ReservationController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -77,6 +76,7 @@ namespace ReservationSystem.Controllers
 
         // POST: Reservation/Create     --User
         [HttpPost]
+        [Authorize(Roles = "User")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ReservationRequest(Reservation reservation)
         {
@@ -87,7 +87,6 @@ namespace ReservationSystem.Controllers
             reservation.NoOfTable = CheckTbl(reservation.NoOfPpl);
             reservation.EndTime = reservation.StartTime.AddHours(2);
             reservation.BookingStatus = Reservation.StatusEnum.Requested;
-            CheckSession(reservation.StartTime);
             if (this.User.IsInRole("User"))
             {
                 reservation.Source = "Online";
@@ -95,25 +94,6 @@ namespace ReservationSystem.Controllers
             _context.Add(reservation);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(UserIndex));
-
-            async void CheckSession(TimeOnly st)
-            {
-                var breakfast = await _context.SittingSchedule.FindAsync(SittingSchedule.SessionEnum.Breakfast);
-                var lunch = await _context.SittingSchedule.FindAsync(SittingSchedule.SessionEnum.Lunch);
-                var dinner = await _context.SittingSchedule.FindAsync(SittingSchedule.SessionEnum.Dinner);
-                if (st.IsBetween(TimeOnly.FromTimeSpan(breakfast.StartTime), TimeOnly.FromTimeSpan(breakfast.EndTime)))
-                {
-                    reservation.SessionType = Reservation.SessionEnum.Breakfast;
-                }
-                else if (st.IsBetween(TimeOnly.FromTimeSpan(lunch.StartTime), TimeOnly.FromTimeSpan(lunch.EndTime)))
-                {
-                    reservation.SessionType = Reservation.SessionEnum.Lunch;
-                }
-                else if (st.IsBetween(TimeOnly.FromTimeSpan(dinner.StartTime), TimeOnly.FromTimeSpan(dinner.EndTime)))
-                {
-                    reservation.SessionType = Reservation.SessionEnum.Dinner;
-                }
-            }
         }
 
         // GET: Reservation/Create      --Staff/Manager
@@ -125,11 +105,10 @@ namespace ReservationSystem.Controllers
 
         // POST: Reservation/Create     --Staff/Manager
         [HttpPost]
+        [Authorize(Roles = "Admin, Staff")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Reservation reservation)
         {
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -139,41 +118,14 @@ namespace ReservationSystem.Controllers
                     reservation.NoOfTable = CheckTbl(reservation.NoOfPpl);
                     reservation.EndTime = reservation.StartTime.AddHours(2);
                     reservation.BookingStatus = Reservation.StatusEnum.Requested;
-                    CheckSession(reservation.StartTime);
-                    reservation.Source = "Online";
-                    if (this.User.IsInRole("User"))
-                    {
-                        reservation.Source = "Online";
-                    }
                     _context.Add(reservation);
                     await _context.SaveChangesAsync();
-                    return View(reservation);
-                }
+                    return RedirectToAction(nameof(Index));
+            }
                 catch (Exception ex)
                 {
                     return RedirectToAction(nameof(Index));
                 }
-            }
-            return View(Index);
-
-            async void CheckSession(TimeOnly st)
-            {
-                var breakfast = await _context.SittingSchedule.FindAsync(SittingSchedule.SessionEnum.Breakfast);
-                var lunch = await _context.SittingSchedule.FindAsync(SittingSchedule.SessionEnum.Lunch);
-                var dinner = await _context.SittingSchedule.FindAsync(SittingSchedule.SessionEnum.Dinner);
-                if (st.IsBetween(TimeOnly.FromTimeSpan(breakfast.StartTime), TimeOnly.FromTimeSpan(breakfast.EndTime)))
-                {
-                    reservation.SessionType = Reservation.SessionEnum.Breakfast;
-                }
-                else if (st.IsBetween(TimeOnly.FromTimeSpan(lunch.StartTime), TimeOnly.FromTimeSpan(lunch.EndTime)))
-                {
-                    reservation.SessionType = Reservation.SessionEnum.Lunch;
-                }
-                else if (st.IsBetween(TimeOnly.FromTimeSpan(dinner.StartTime), TimeOnly.FromTimeSpan(dinner.EndTime)))
-                {
-                    reservation.SessionType = Reservation.SessionEnum.Dinner;
-                }
-            }
         }
         public string CheckUId (string id)
         {
@@ -198,6 +150,7 @@ namespace ReservationSystem.Controllers
         }
 
         // GET: Reservation/Edit/5
+        [Authorize(Roles = "Admin, Staff, User")]
         public async Task<IActionResult> Edit(string contact, DateTime date, DateTime time)
         {
             if ((contact == null || date == null || time == null) || _context.Reservation == null)
@@ -216,6 +169,7 @@ namespace ReservationSystem.Controllers
         }
 
         //GET: Reservation/Approve
+        [Authorize(Roles = "Admin, Staff, User")]
         public async Task<IActionResult> Approve(string contact, DateTime date, DateTime time)
         {
             if ((contact == null || date == null || time == null) || _context.Reservation == null)
@@ -253,6 +207,7 @@ namespace ReservationSystem.Controllers
 
         // POST: Reservation/Edit/5
         [HttpPost]
+        [Authorize(Roles = "Admin, Staff, User")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string contact, Reservation reservation)
         {
@@ -267,7 +222,6 @@ namespace ReservationSystem.Controllers
                 reservation.ResDate = DateOnly.Parse(reservation.DateTime.ToShortDateString());
                 reservation.NoOfTable = CheckTbl(reservation.NoOfPpl);
                 reservation.EndTime = reservation.StartTime.AddHours(2);
-                CheckSession(reservation.StartTime);
                 _context.Update(reservation);
                 await _context.SaveChangesAsync();
             }
@@ -283,28 +237,10 @@ namespace ReservationSystem.Controllers
                 }
             }
             return RedirectToAction(nameof(Index));
-
-            async void CheckSession(TimeOnly st)
-            {
-                var breakfast = await _context.SittingSchedule.FindAsync(SittingSchedule.SessionEnum.Breakfast);
-                var lunch = await _context.SittingSchedule.FindAsync(SittingSchedule.SessionEnum.Lunch);
-                var dinner = await _context.SittingSchedule.FindAsync(SittingSchedule.SessionEnum.Dinner);
-                if (st.IsBetween(TimeOnly.FromTimeSpan(breakfast.StartTime), TimeOnly.FromTimeSpan(breakfast.EndTime)))
-                {
-                    reservation.SessionType = Reservation.SessionEnum.Breakfast;
-                }
-                else if (st.IsBetween(TimeOnly.FromTimeSpan(lunch.StartTime), TimeOnly.FromTimeSpan(lunch.EndTime)))
-                {
-                    reservation.SessionType = Reservation.SessionEnum.Lunch;
-                }
-                else if (st.IsBetween(TimeOnly.FromTimeSpan(dinner.StartTime), TimeOnly.FromTimeSpan(dinner.EndTime)))
-                {
-                    reservation.SessionType = Reservation.SessionEnum.Dinner;
-                }
-            }
         }
 
         // GET: Reservation/Delete/5
+        [Authorize(Roles = "Admin, Staff, User")]
         public async Task<IActionResult> Delete(string contact, DateTime date, DateTime time)
         {
             if ((contact == null || date == null || time == null) || _context.Reservation == null)
@@ -325,6 +261,7 @@ namespace ReservationSystem.Controllers
 
         // POST: Reservation/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin, Staff, User")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string contact, DateTime date, DateTime time)
         {

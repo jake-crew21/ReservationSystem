@@ -21,9 +21,18 @@ namespace ReservationSystem.Controllers
         }
 
         // GET: SittingSchedule
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(SittingSchedule.SessionEnum? session)
         {
-              return View(await _context.SittingSchedule.ToListAsync());
+            if (session == null)
+            {
+                return View(await _context.SittingSchedule.ToListAsync());
+            }
+            else
+            {
+                var filter = await _context.SittingSchedule.AsQueryable()
+                .Where(s => s.SessionType == session).ToListAsync();
+                return View(filter);
+            }
         }
 
         // GET: SittingSchedule/Details/5
@@ -65,7 +74,7 @@ namespace ReservationSystem.Controllers
         }
 
         // GET: SittingSchedule/Edit/5
-        public async Task<IActionResult> Edit(int sessionTypeId)
+        public async Task<IActionResult> Edit(SittingSchedule.SessionEnum sessionTypeId)
         {
             if (sessionTypeId == null || _context.SittingSchedule == null)
             {
@@ -83,9 +92,9 @@ namespace ReservationSystem.Controllers
         // POST: SittingSchedule/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int sessionTypeId, SittingSchedule sittingSchedule)
+        public async Task<IActionResult> Edit(SittingSchedule.SessionEnum sessionTypeId, SittingSchedule sittingSchedule)
         {
-            if (sessionTypeId != (int)sittingSchedule.SessionType)
+            if (sessionTypeId != sittingSchedule.SessionType)
             {
                 return NotFound();
             }
@@ -114,7 +123,7 @@ namespace ReservationSystem.Controllers
         }
 
         // GET: SittingSchedule/Delete/5
-        public async Task<IActionResult> Delete(int sessionTypeId)
+        public async Task<IActionResult> Delete(SittingSchedule.SessionEnum sessionTypeId)
         {
             if (sessionTypeId == null || _context.SittingSchedule == null)
             {
@@ -122,7 +131,7 @@ namespace ReservationSystem.Controllers
             }
 
             var sittingSchedule = await _context.SittingSchedule
-                .FirstOrDefaultAsync(m => ((int)m.SessionType) == sessionTypeId);
+                .FirstOrDefaultAsync(m => m.SessionType == sessionTypeId);
             if (sittingSchedule == null)
             {
                 return NotFound();
