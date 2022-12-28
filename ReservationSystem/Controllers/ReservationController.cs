@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ReservationSystem.Data;
 using ReservationSystem.Models;
-using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
@@ -27,6 +26,14 @@ namespace ReservationSystem.Controllers
             _context = context;
         }
 
+        public ReservationController()
+        {
+        }
+
+        /// <summary>
+        /// Get all reservations
+        /// </summary>
+        /// <returns>All reservations from database</returns>
         // GET: Reservation
         [Authorize(Roles = "Admin, Staff")]
         public async Task<IActionResult> Index()
@@ -35,7 +42,10 @@ namespace ReservationSystem.Controllers
                           View(await _context.Reservation.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Reservation'  is null.");
         }
-
+        /// <summary>
+        /// Get all reservations made by user
+        /// </summary>
+        /// <returns>All reservations made by user from database</returns>
         //GET: Reservation    --only made by the "User"
         [Authorize(Roles = "User")]
         public async Task<IActionResult> UserIndex()
@@ -46,19 +56,21 @@ namespace ReservationSystem.Controllers
             var filtered = await _context.Reservation.AsQueryable().Where(r => r.Id == userId).ToListAsync();
             return View(filtered);
         }
-
+        /// <summary>
+        /// Displays individual reservation
+        /// </summary>
+        /// <param name="bookingId"></param>
+        /// <returns>Displays selected reservation</returns>
         // GET: Reservation/Details/5
         [Authorize(Roles = "Admin, Staff, User")]
-        public async Task<IActionResult> Details(string contact, DateTime date, DateTime time)
+        public async Task<IActionResult> Details(string bookingId)
         {
-            if ((contact == null || date == null || time == null) || _context.Reservation == null)
+            if (bookingId == null || _context.Reservation == null)
             {
                 return NotFound();
             }
-            DateOnly d = DateOnly.Parse(date.ToShortDateString());
-            TimeOnly t = TimeOnly.Parse(time.ToShortTimeString());
             var reservation = await _context.Reservation
-                .FindAsync(contact, d, t);
+                .FindAsync(bookingId);
             if (reservation == null)
             {
                 return NotFound();
@@ -66,14 +78,21 @@ namespace ReservationSystem.Controllers
 
             return View(reservation);
         }
-
+        /// <summary>
+        /// Empty model to create new reservation for "User"
+        /// </summary>
+        /// <returns>Emtpy reservation Model</returns>
         // GET: Reservation/Create      --User Create
         [Authorize(Roles = "User")]
         public IActionResult ReservationRequest()
         {
             return View();
         }
-
+        /// <summary>
+        /// User reservation Create, Status is set to "requested"
+        /// </summary>
+        /// <param name="reservation"></param>
+        /// <returns>Adds reservation with "requested" status to database</returns>
         // POST: Reservation/Create     --User
         [HttpPost]
         [Authorize(Roles = "User")]
@@ -95,14 +114,21 @@ namespace ReservationSystem.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(UserIndex));
         }
-
+        /// <summary>
+        /// Empty model to create new reservation
+        /// </summary>
+        /// <returns>Emtpy reservation Model</returns>
         // GET: Reservation/Create      --Staff/Manager
         [Authorize(Roles = "Admin, Staff")]
         public IActionResult Create()
         {
             return View();
         }
-
+        /// <summary>
+        /// Creates new reservation entry
+        /// </summary>
+        /// <param name="reservation"></param>
+        /// <returns>Adds reservation to database</returns>
         // POST: Reservation/Create     --Staff/Manager
         [HttpPost]
         [Authorize(Roles = "Admin, Staff")]
@@ -148,38 +174,42 @@ namespace ReservationSystem.Controllers
                 return fNum;
             }
         }
-
+        /// <summary>
+        /// Displays selected reservation with editable fields
+        /// </summary>
+        /// <param name="bookingId"></param>
+        /// <returns>Editable reservation</returns>
         // GET: Reservation/Edit/5
         [Authorize(Roles = "Admin, Staff, User")]
-        public async Task<IActionResult> Edit(string contact, DateTime date, DateTime time)
+        public async Task<IActionResult> Edit(int bookingId)
         {
-            if ((contact == null || date == null || time == null) || _context.Reservation == null)
+            if (bookingId == null || _context.Reservation == null)
             {
                 return NotFound();
             }
-            DateOnly d = DateOnly.Parse(date.ToShortDateString());
-            TimeOnly t = TimeOnly.Parse(time.ToShortTimeString());
             var reservation = await _context.Reservation
-                .FindAsync(contact, d, t);
+                .FindAsync(bookingId);
             if (reservation == null)
             {
                 return NotFound();
             }
             return View(reservation);
         }
-
-        //GET: Reservation/Approve
+        /// <summary>
+        /// Changes selected reservation status to "Approved"
+        /// </summary>
+        /// <param name="bookingId"></param>
+        /// <returns>Changes selected reservation status to "Approved"</returns>
+        //PUT: Reservation/Approve
         [Authorize(Roles = "Admin, Staff, User")]
-        public async Task<IActionResult> Approve(string contact, DateTime date, DateTime time)
+        public async Task<IActionResult> Approve(int bookingId)
         {
-            if ((contact == null || date == null || time == null) || _context.Reservation == null)
+            if (bookingId == null || _context.Reservation == null)
             {
                 return NotFound();
             }
-            DateOnly d = DateOnly.Parse(date.ToShortDateString());
-            TimeOnly t = TimeOnly.Parse(time.ToShortTimeString());
             var reservation = await _context.Reservation
-                .FindAsync(contact, d, t);
+                .FindAsync(bookingId);
             if (reservation == null)
             {
                 return NotFound();
@@ -193,7 +223,7 @@ namespace ReservationSystem.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ReservationExists(reservation.Contact))
+                if (!ReservationExists(reservation.BookingId))
                 {
                     return NotFound();
                 }
@@ -204,14 +234,19 @@ namespace ReservationSystem.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-
+        /// <summary>
+        /// Updates displayed reservation
+        /// </summary>
+        /// <param name="bookingId"></param>
+        /// <param name="reservation"></param>
+        /// <returns>Updates reservation, redirects to index</returns>
         // POST: Reservation/Edit/5
         [HttpPost]
         [Authorize(Roles = "Admin, Staff, User")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string contact, Reservation reservation)
+        public async Task<IActionResult> Edit(int bookingId, Reservation reservation)
         {
-            if (contact != reservation.Contact)
+            if (bookingId != reservation.BookingId)
             {
                 return NotFound();
             }
@@ -227,7 +262,7 @@ namespace ReservationSystem.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ReservationExists(reservation.Contact))
+                if (!ReservationExists(reservation.BookingId))
                 {
                     return NotFound();
                 }
@@ -238,40 +273,43 @@ namespace ReservationSystem.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-
+        /// <summary>
+        /// Displayes selected reservation with ability to delete
+        /// </summary>
+        /// <param name="bookingId"></param>
+        /// <returns>Displayes selected reservation</returns>
         // GET: Reservation/Delete/5
         [Authorize(Roles = "Admin, Staff, User")]
-        public async Task<IActionResult> Delete(string contact, DateTime date, DateTime time)
+        public async Task<IActionResult> Delete(int bookingId)
         {
-            if ((contact == null || date == null || time == null) || _context.Reservation == null)
+            if (bookingId == null || _context.Reservation == null)
             {
                 return NotFound();
             }
-            DateOnly d = DateOnly.Parse(date.ToShortDateString());
-            TimeOnly t = TimeOnly.Parse(time.ToShortTimeString());
             var reservation = await _context.Reservation
-                .FindAsync(contact, d, t);
-            if (reservation == null)
+                .FindAsync(bookingId);
+            if (reservation != null)
             {
-                return NotFound();
+                return View(reservation);
             }
-
-            return View(reservation);
+            return NotFound();
         }
-
-        // POST: Reservation/Delete/5
+        /// <summary>
+        /// Removes selected reservation to database
+        /// </summary>
+        /// <param name="bookingId"></param>
+        /// <returns>once reservation is removed, redirected to index</returns>
+        // DELETE: Reservation/Delete/5
         [HttpPost, ActionName("Delete")]
         [Authorize(Roles = "Admin, Staff, User")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string contact, DateTime date, DateTime time)
+        public async Task<IActionResult> DeleteConfirmed(int bookingId)
         {
             if (_context.Reservation == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Reservation'  is null.");
             }
-            DateOnly d = DateOnly.Parse(date.ToShortDateString());
-            TimeOnly t = TimeOnly.Parse(time.ToShortTimeString());
-            var reservation = await _context.Reservation.FindAsync(contact, d, t);
+            var reservation = await _context.Reservation.FindAsync(bookingId);
             if (reservation != null)
             {
                 _context.Reservation.Remove(reservation);
@@ -281,9 +319,9 @@ namespace ReservationSystem.Controllers
             return RedirectToAction(nameof(Index));
         }
         
-        private bool ReservationExists(string id)
+        private bool ReservationExists(int id)
         {
-          return (_context.Reservation?.Any(e => e.Contact == id)).GetValueOrDefault();
+          return (_context.Reservation?.Any(e => e.BookingId == id)).GetValueOrDefault();
         }
     }
 }

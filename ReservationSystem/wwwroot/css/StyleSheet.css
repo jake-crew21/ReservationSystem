@@ -325,16 +325,16 @@ section {
     height: 44px;
     border-radius: 50px;
     transition: all 0.4s;
-    border: 2px solid #273469;
+    border: 2px solid #FAFAFF;
 }
 .back-to-top i {
     font-size: 28px;
-    color: #273469;
+    color: #FAFAFF;
     line-height: 0;
 }
 
 .back-to-top:hover {
-    background: #273469;
+    background: #FAFAFF;
     color: #1E2749;
 }
 
@@ -734,6 +734,12 @@ section {
     width: 150px;
     height: 60px;
 }
+
+/*.schedule-img-card-edit
+#image-dropzone {
+    height: 150px;
+    width: 200px;
+}*/
 
 .Table-Index {
     justify-content: space-evenly;

@@ -5,6 +5,8 @@ namespace ReservationSystem.Models
 {
     public class SittingSchedule
     {
+        [Required]
+        public int Id { get; set; }
         [Required, DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
@@ -26,5 +28,7 @@ namespace ReservationSystem.Models
             Dinner,
             SpecialEvent
         }
+        [DataType(DataType.ImageUrl)]
+        public string ImageUrl { get; set; }
     }
 }

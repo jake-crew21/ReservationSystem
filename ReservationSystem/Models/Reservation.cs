@@ -5,12 +5,16 @@ namespace ReservationSystem.Models
 {
     public class Reservation
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
+        public int BookingId { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
         public string? Id { get; set; }
-        [Key, Column(Order = 1)]
+        //[Key, Column(Order = 1)]
         [Required]
         public string Contact { get; set; }
         [Required]
@@ -18,10 +22,10 @@ namespace ReservationSystem.Models
         public int? NoOfTable { get; set; }
         [Required]
         public DateTime DateTime { get; set; }
-        [Key, Column(Order=2)]
+        //[Key, Column(Order=2)]
         [Required]
         public DateOnly ResDate { get; set; }
-        [Key,Column(Order=3)]
+        //[Key,Column(Order=3)]
         [Required]
         public TimeOnly StartTime { get; set; }
         [Required]

@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32811.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReservationSystem", "ReservationSystem\ReservationSystem.csproj", "{B40B44D4-3D11-49ED-BBA8-DB77E846C7B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReservationSystem", "ReservationSystem\ReservationSystem.csproj", "{B40B44D4-3D11-49ED-BBA8-DB77E846C7B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReservationSystem.Tests", "ReservationSystem.Tests\ReservationSystem.Tests.csproj", "{CE5B619F-B897-4848-86DF-B160F17E68EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B40B44D4-3D11-49ED-BBA8-DB77E846C7B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B40B44D4-3D11-49ED-BBA8-DB77E846C7B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B40B44D4-3D11-49ED-BBA8-DB77E846C7B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE5B619F-B897-4848-86DF-B160F17E68EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE5B619F-B897-4848-86DF-B160F17E68EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE5B619F-B897-4848-86DF-B160F17E68EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE5B619F-B897-4848-86DF-B160F17E68EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

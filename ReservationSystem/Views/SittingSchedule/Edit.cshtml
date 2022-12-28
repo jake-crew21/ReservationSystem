@@ -9,9 +9,10 @@
 @{
     ViewData["Title"] = "Edit";
 }
+<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 <section class="SittingSchedule-Index row">
     <div class="section-title">
-        <h1>Sitting Schedule</h1>
+        <h1>Sitting Schedule for @Model.SessionType</h1>
         <h4>Hi @user.FirstName</h4>
     </div>
     <div class="session-picker">
@@ -19,7 +20,7 @@
             <span>All</span>
         </a>
     </div>
-    <form asp-action="Edit" class="SittingSchedule-Index row">
+    <form asp-action="Edit" class="SittingSchedule-Index row" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="card schedule-card-edit">
             <h2>Capacity</h2>
@@ -46,12 +47,68 @@
             <input asp-for="EndTime" class="form-control"/>
             <span asp-validation-for="EndTime" class="text-danger"></span>
         </div>
+        <div class="card schedule-card-edit">
+            <label asp-for="ImageUrl" class="control-label"></label>
+            <input type="hidden" asp-for="ImageUrl" id="ImageUrl"/>
+            <div id="imageDropzone" class="dropzone fallback" onchange="imageDropzon.getUploadingFiles">
+                @*<input type="file" multiple onchange="imageDropzon.getUploadingFiles"/>*@
+            </div>
+        </div>
+        <input type="hidden" asp-for="Id"/>
+        <span asp-validation-for="Id" class="text-danger"></span>
+        <input type="hidden" asp-for="SessionType"/>
+        <span asp-validation-for="SessionType" class="text-danger"></span>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary"/>
+@*            <div class="session-picker">
+                <a type="button" class="button-64" href="@Url.Action("Edit", "SittingSchedule", new {Model.Id, Model}, "POST")">
+                    <span>Save</span>
+                </a>
+            </div>*@
+        </div>
     </form>
 </section>
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+<script defer>
+
+    Dropzone.autoDiscover = false
+
+
+    let imageDropzon = new Dropzone("div#imageDropzone", {
+            paramName: "file",          //The name that will be used to transfer the file
+            url: "/SittingSchedule/ImageUpload",    //URL endpoint/action for the image upload
+            maxFiles: 1,                //Only 1 file can be uploaded
+            init: function(){           //Runs on initialisation
+                //Add the 'dropzone' class onto our div to activate the default Dropzone styling
+                if(this.element){
+                    this.element.classList.add("dropzone")
+                }
+                //this.on("addedfile", file => {
+                //    console.log(this)
+                //})
+            },
+            success: function(file){
+                console.log("Image uploaded successfully...")
+
+                //Get uploaded image URL from response from ImageUpload action
+                const uploadedFileUrl = file?.xhr?.responseText ?? ""
+
+                //Get hidden input for ImageUrl
+                const imageUrlInput = document.getElementById("ImageUrl")
+
+                //Make sure both the hidden input and the image URL exist
+                if(imageUrlInput && uploadedFileUrl){
+                    //update image url for the area based on the uploaded file (remove extra double quotes from responseText)
+                    imageUrlInput.value = uploadedFileUrl.replaceAll('"','').replaceAll("\\", '/')
+                }
+            }
+        }
+    );
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

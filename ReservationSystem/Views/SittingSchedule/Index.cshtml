@@ -17,19 +17,22 @@
         <h4>Hi @user.FirstName</h4>
     </div>
     <div class="session-picker">
-        <a type="button" class="button-64" href="@Url.Action("Edit", new {session = SittingSchedule.SessionEnum.Breakfast})">
+        <a type="button" class="button-64" href="@Url.Action("Edit", new {sessionId = 1})">
             <span>Breakfast</span>
         </a>
-        <a type="button" class="button-64" href="@Url.Action("Edit", new {session = SittingSchedule.SessionEnum.Lunch})">
+        <a type="button" class="button-64" href="@Url.Action("Edit", new {sessionId = 2})">
             <span>Lunch</span>
         </a>
-        <a type="button" class="button-64" href="@Url.Action("Edit", new {session = SittingSchedule.SessionEnum.Dinner})">
+        <a type="button" class="button-64" href="@Url.Action("Edit", new {sessionId = 3})">
             <span>Dinner</span>
         </a>
     </div>
     @foreach (var item in Model)
     {
         <div class="card schedule-card">
+            <div>
+                    <img src="@item.ImageUrl" class="card-img-top" >
+            </div>
             <div class="card-header">
                 <h2>@Html.DisplayFor(modelItem => item.SessionType)</h2>
             </div>
@@ -38,11 +41,6 @@
                 <h4>@Html.DisplayFor(i => item.StartTime) - @Html.DisplayFor(i => item.EndTime)</h4>
                 <h4>@Html.DisplayFor(i => item.StartDate) - @Html.DisplayFor(i => item.EndDate)</h4>
             </div>
-            @*<div class="card-footer">
-                <a type="button" class="btn-primary" href="@Url.Action("Edit", new {session = item.SessionType})">
-                    <span>Edit</span>
-                </a>
-            </div>*@
         </div>
     }
 </section>

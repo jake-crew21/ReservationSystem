@@ -1,0 +1,43 @@
+﻿@model IEnumerable<ReservationSystem.Models.Sitting>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+
+@{
+    ViewData["Title"] = "Index";
+}
+<section id="booking-index" class="booking-index row">
+    <div class="section-title">
+        <h1>Tables Seated</h1>
+        <h4>Hi @user.FirstName</h4>
+        <br/>
+        <a type="button" class="btn-primary" asp-action="AssignTable">
+            <span>Assign Table</span>
+        </a>
+    </div>
+
+    @foreach (var item in Model)
+    {
+        <div class="card booking-card">
+            <div class="card-header">
+                <h4>@Html.DisplayFor(modelItem => item.Reservation.FirstName) @Html.DisplayFor(modelItem => item.Reservation.LastName)</h4>
+                <h5>@item.Reservation.ResDate.ToShortDateString()</h5>
+                <h5>@item.Reservation.StartTime.ToShortTimeString()</h5>
+                <h5>@Html.DisplayFor(m => item.Reservation.SessionType)</h5>
+            </div>
+            <div class="card-body">
+                <h6>People: @Html.DisplayFor(m => item.Reservation.NoOfPpl)</h6>
+                <h5>Status: @Html.DisplayFor(m => item.Reservation.BookingStatus)</h5>
+            </div>
+            <div class="card-footer">
+                <h4>Area: @Html.DisplayFor(m=> item.Table.Area)</h4>
+                <h4>Table: @Html.DisplayFor(m => item.Table.TableNum)</h4>
+            </div>
+            <div class="card-approve-bttn">
+                @Html.ActionLink("Delete", "Delete", new { id = item.TableId, bookingId = item.BookingId }, new {@class = "button-64"})
+            </div>
+        </div>
+    }
+</section>

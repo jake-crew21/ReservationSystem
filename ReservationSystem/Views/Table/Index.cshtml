@@ -4,6 +4,7 @@
 @inject UserManager<ApplicationUser> UserManager
 @{
     var user = await UserManager.GetUserAsync(User);
+    ApplicationUser.Name fullName = new ApplicationUser.Name();
 }
 
 @{
@@ -13,7 +14,7 @@
 <section id="Table-Index" class="Table-Index row">
     <div class="section-title">
         <h1>Tables</h1>
-        <h4>Hi @user.FirstName</h4>
+        <h4>Hi @fullName.FullName(user)</h4>
     </div>
     <div class="area-picker">
         <a type="button" class="button-64" href="@Url.Action("Index")">
@@ -37,12 +38,8 @@
             <h3>Tables: @Model.Where(a => a.Area == Table.AreaEnum.Main).Count()</h3>
         </div>
         <div class="card-footer">
-            <a type="button" class="button-64" href="@Url.Action("QuickAdd", new {area = Table.AreaEnum.Main})">
-                <span>+</span>
-            </a>
-            <a type="button" class="button-64" href="@Url.Action("QuickRemove", new {area = Table.AreaEnum.Main})">
-                <span>-</span>
-            </a>
+            @Html.ActionLink("+", "QuickAdd", new { area = Table.AreaEnum.Main }, new {@class = "button-64"})
+            @Html.ActionLink("-", "Delete", new { area = Table.AreaEnum.Main }, new {@class = "button-64"})
         </div>
     </div>
     <div class="card table-card">
@@ -52,6 +49,10 @@
         <div class="card-body">
             <h3>Tables: @Model.Where(a => a.Area == Table.AreaEnum.Outside).Count()</h3>
         </div>
+        <div class="card-footer">
+            @Html.ActionLink("+", "QuickAdd", new { area = Table.AreaEnum.Outside }, new {@class = "button-64"})
+            @Html.ActionLink("-", "Delete", new { area = Table.AreaEnum.Outside }, new {@class = "button-64"})
+        </div>
     </div>
     <div class="card table-card">
         <div class="card-header">
@@ -59,6 +60,10 @@
         </div>
         <div class="card-body">
             <h3>Tables: @Model.Where(a => a.Area == Table.AreaEnum.Balcony).Count()</h3>
+        </div>
+        <div class="card-footer">
+            @Html.ActionLink("+", "QuickAdd", new { area = Table.AreaEnum.Balcony }, new {@class = "button-64"})
+            @Html.ActionLink("-", "Delete", new { area = Table.AreaEnum.Balcony }, new {@class = "button-64"})
         </div>
     </div>
 </section>

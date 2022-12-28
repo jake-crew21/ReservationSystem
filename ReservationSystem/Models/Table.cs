@@ -20,5 +20,7 @@ namespace ReservationSystem.Models
         }
         [Required]
         public string TableNum { get; set; }
+        [DataType(DataType.ImageUrl)]
+        public string? ImageUrl { get; set; }
     }
 }

@@ -1,84 +1,62 @@
 ﻿@model ReservationSystem.Models.Reservation
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Reservation</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NoOfPpl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NoOfPpl)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NoOfTable)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NoOfTable)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Duration)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Duration)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Notes)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Notes)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Source)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Source)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BookingStatus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BookingStatus)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SessionType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SessionType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Area)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Area)
-        </dd>
-    </dl>
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { Model.Contact, Model.ResDate, Model.StartTime }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+<section id="booking-index" class="booking-index row">
+    <div class="section-title">
+        <h1>Reservation for: @Html.DisplayFor(modelItem => Model.FirstName) @Html.DisplayFor(modelItem => Model.LastName)</h1>
+        <h4>Hi @user.FirstName</h4>
+        <br/>
+    </div>
+    <div class="card booking-card">
+        <div class="card-header">
+            <h4>Date</h4>
+        </div>
+        <div class="card-body">
+            <h5>@Model.ResDate.ToShortDateString()</h5>
+        </div>
+    </div>
+    <div class="card booking-card">
+        <div class="card-header">
+            <h4>Start Time</h4>
+        </div>
+        <div class="card-body">
+            <h5>@Model.StartTime.ToShortTimeString()</h5>
+        </div>
+    </div>
+    <div class="card booking-card">
+        <div class="card-header">
+            <h4>@Html.DisplayNameFor(m => m.SessionType)</h4>
+        </div>
+        <div class="card-body">
+            <h5>@Html.DisplayFor(m => Model.SessionType)</h5>
+        </div>
+    </div>
+    <div class="card booking-card">
+        <div class="card-header">
+            <h4>Number of People</h4>
+        </div>
+        <div class="card-body">
+            <h5>@Html.DisplayFor(m => m.NoOfPpl)</h5>
+        </div>
+    </div>
+    <div class="card booking-card">
+        <div class="card-header">
+            <h4>Status</h4>
+        </div>
+        <div class="card-body">
+            <h5>@Html.DisplayFor(m => m.BookingStatus)</h5>
+        </div>
+    </div>
+    <div>
+        @Html.ActionLink("Edit", "Edit", new { Model.BookingId }) |
+        <a asp-action="Index">Back to List</a>
+    </div>
+</section>

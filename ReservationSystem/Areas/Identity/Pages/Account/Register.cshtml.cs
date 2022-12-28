@@ -85,6 +85,7 @@ namespace ReservationSystem.Areas.Identity.Pages.Account
             public string FirstName { get; set; }
             [Required]
             public string LastName { get; set; }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]

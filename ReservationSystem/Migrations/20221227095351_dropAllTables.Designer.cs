@@ -12,14 +12,14 @@ using ReservationSystem.Data;
 namespace ReservationSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221028024843_setResNullable")]
-    partial class setResNullable
+    [Migration("20221227095351_dropAllTables")]
+    partial class dropAllTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.10")
+                .HasAnnotation("ProductVersion", "6.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -161,35 +161,6 @@ namespace ReservationSystem.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ReservationSystem.Models.AccountType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AccountType");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Standard"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Admin"
-                        });
-                });
-
             modelBuilder.Entity("ReservationSystem.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -267,23 +238,21 @@ namespace ReservationSystem.Migrations
 
             modelBuilder.Entity("ReservationSystem.Models.Reservation", b =>
                 {
-                    b.Property<string>("Contact")
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnOrder(1);
+                    b.Property<int>("BookingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("ResDate")
-                        .HasColumnType("date")
-                        .HasColumnOrder(2);
-
-                    b.Property<TimeSpan>("StartTime")
-                        .HasColumnType("time")
-                        .HasColumnOrder(3);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingId"), 1L, 1);
 
                     b.Property<int>("Area")
                         .HasColumnType("int");
 
                     b.Property<int>("BookingStatus")
                         .HasColumnType("int");
+
+                    b.Property<string>("Contact")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
@@ -314,6 +283,9 @@ namespace ReservationSystem.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("ResDate")
+                        .HasColumnType("date");
+
                     b.Property<int>("SessionType")
                         .HasColumnType("int");
 
@@ -321,32 +293,62 @@ namespace ReservationSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Contact", "ResDate", "StartTime");
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.HasKey("BookingId");
 
                     b.ToTable("Reservation");
                 });
 
+            modelBuilder.Entity("ReservationSystem.Models.Sitting", b =>
+                {
+                    b.Property<int>("TableId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.Property<int>("BookingId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(2);
+
+                    b.HasKey("TableId", "BookingId");
+
+                    b.HasIndex("BookingId");
+
+                    b.ToTable("Sitting");
+                });
+
             modelBuilder.Entity("ReservationSystem.Models.SittingSchedule", b =>
                 {
-                    b.Property<int>("SessionType")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("date");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("DayOfWeek")
+                    b.Property<int>("Capacity")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("date");
+                        .HasColumnType("datetime2");
 
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("time");
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SessionType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<TimeSpan>("StartTime")
                         .HasColumnType("time");
 
-                    b.HasKey("SessionType", "StartDate");
+                    b.HasKey("Id");
 
                     b.ToTable("SittingSchedule");
                 });
@@ -361,6 +363,9 @@ namespace ReservationSystem.Migrations
 
                     b.Property<int>("Area")
                         .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Seats")
                         .HasColumnType("int");
@@ -423,6 +428,25 @@ namespace ReservationSystem.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ReservationSystem.Models.Sitting", b =>
+                {
+                    b.HasOne("ReservationSystem.Models.Reservation", "Reservation")
+                        .WithMany()
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ReservationSystem.Models.Table", "Table")
+                        .WithMany()
+                        .HasForeignKey("TableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Reservation");
+
+                    b.Navigation("Table");
                 });
 #pragma warning restore 612, 618
         }

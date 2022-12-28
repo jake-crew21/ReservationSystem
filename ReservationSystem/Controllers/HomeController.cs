@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using ReservationSystem.Models;
 using System.Diagnostics;
 
@@ -11,6 +12,10 @@ namespace ReservationSystem.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+        }
+
+        public HomeController()
+        {
         }
 
         public IActionResult Index()

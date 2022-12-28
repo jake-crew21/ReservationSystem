@@ -1,0 +1,52 @@
+﻿@model ReservationSystem.ViewModels.SittingViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+
+@{
+    ViewData["Title"] = "AssignTable";
+}
+<section id="booking-index" class="booking-index row">
+    <div class="section-title">
+        <h1>Assign Tables</h1>
+        <h4>Hi @user.FirstName</h4>
+        <br/>
+        <a type="button" class="btn-primary" asp-action="Index">
+            <span class="glyphicon glyphicon-step-backward"></span>
+        </a>
+    </div>
+    @foreach (var item in Model.Reservation)
+    {
+        <div class="card booking-card">
+            <div class="card-header">
+                <h4>@Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)</h4>
+                <h5>@item.ResDate.ToShortDateString()</h5>
+                <h5>@item.StartTime.ToShortTimeString()</h5>
+                <h5>@Html.DisplayFor(m => item.SessionType)</h5>
+            </div>
+            <div class="card-body">
+                <h6>People: @Html.DisplayFor(m => item.NoOfPpl)</h6>
+                <h6>Tables: @Html.DisplayFor(m => item.NoOfTable)</h6>
+                <h5>Status: @Html.DisplayFor(m => item.BookingStatus)</h5>
+
+            </div>
+            <form asp-action="AssignTable">
+                <div class="card-footer">
+                    <input type="hidden" asp-for="Sitting.BookingId" class="form-control" value="@item.BookingId"/>
+                    <input type="hidden" asp-for="Sitting.Reservation" class="form-control" value="@item"/>
+                    @Html.DropDownListFor(model => model.Sitting.TableId, new SelectList(Model.Table,"Id", "TableNum"),
+                    new {@class="form-control from-select"})
+                </div>
+                <div class="card-approve-bttn">
+                    <input type="submit" value="Assign Table" class="button-64" />
+                </div>
+            </form>
+        </div>
+    }
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
